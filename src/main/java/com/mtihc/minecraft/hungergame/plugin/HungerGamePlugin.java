@@ -3,6 +3,7 @@ package com.mtihc.minecraft.hungergame.plugin;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -26,6 +27,7 @@ import com.mtihc.minecraft.hungergame.game.configuration.GameFeastSerializable;
 import com.mtihc.minecraft.hungergame.game.configuration.GameInfoSerializable;
 import com.mtihc.minecraft.hungergame.game.exceptions.GameException;
 import com.mtihc.minecraft.hungergame.game.exceptions.GameJoinedException;
+import com.mtihc.minecraft.hungergame.game.exceptions.GameRunningException;
 import com.mtihc.minecraft.hungergame.plugin.commands.HungerGameCommand;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -56,6 +58,21 @@ public class HungerGamePlugin extends JavaPlugin {
 
 	private GameControl control;
 
+	@Override
+	public void onDisable() {
+		
+		// stop all games
+		Iterator<Game> iterator = control.getGames().iterator();
+		while(iterator.hasNext()) {
+			Game game = iterator.next();
+			try {
+				game.stop();
+			} catch (GameRunningException e) {
+				
+			}
+		}
+	}
+	
 	@Override
 	public void onEnable() {
 
