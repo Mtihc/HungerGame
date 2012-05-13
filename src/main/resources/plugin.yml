@@ -1,0 +1,55 @@
+name: HungerGame
+author: Mtihc
+description: The Hunger Game
+main: com.mtihc.minecraft.hungergame.plugin.HungerGamePlugin
+depend: [WorldEdit, WorldGuard]
+softdepend: []
+version: 1.0
+commands:
+    hunger:
+        aliases: [hungergame]
+        description: Type /hunger ? for more info
+        usage: /hunger ?
+permissions:
+    hungergame.admin:
+        description: Grants all permissions
+        default: op
+        children:
+            hungergame.reload: true
+            hungergame.create: true
+            hungergame.delete: true
+            hungergame.list: true
+            hungergame.start: true
+            hungergame.stop: true
+            hungergame.join: true
+            hungergame.leave: true
+    hungergame.player:
+        description: Grants all permissions a player would normally have
+        default: false
+        children:
+            hungergame.join: true
+            hungergame.leave: true
+    hungergame.reload:
+        description: Allows you to reload the config
+        default: op
+    hungergame.create:
+        description: Allows you to create games
+        default: op
+    hungergame.delete:
+        description: Allows you to delete created games
+        default: op
+    hungergame.list:
+        description: Allows you to list created games
+        default: op
+    hungergame.start:
+        description: Allows you to open/start games
+        default: op
+    hungergame.stop:
+        description: Allows you to stop games
+        default: op
+    hungergame.join:
+        description: Allows you to join games
+        default: op
+    hungergame.leave:
+        description: Allows you to leave games
+        default: op
