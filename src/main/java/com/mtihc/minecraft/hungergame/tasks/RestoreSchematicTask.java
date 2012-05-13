@@ -13,13 +13,7 @@ import com.sk89q.worldedit.data.DataException;
 
 public class RestoreSchematicTask implements Runnable {
 
-	public interface RestoreSchematicCallback {
-		void onRestoreSchematicStart(RestoreSchematicTask task);
-
-		void onRestoreSchematicCancel(RestoreSchematicTask task);
-
-		void onRestoreSchematicFinish(RestoreSchematicTask task);
-	}
+	
 	
 	private JavaPlugin plugin;
 	private RestoreSchematicCallback callback;
