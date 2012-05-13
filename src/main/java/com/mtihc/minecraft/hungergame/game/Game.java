@@ -52,6 +52,8 @@ import com.sk89q.worldedit.data.ChunkStore;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.snapshots.Snapshot;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -127,6 +129,11 @@ public class Game implements CountdownCallback, RestoreRegionCallback, RestoreSc
 			throw new GameException("Region \"" + info.getRegion()
 					+ "\" doesn't exist in world \"" + world.getName() + "\".");
 		}
+		
+		// players can't enter or leave the area
+		region.setFlag(DefaultFlag.ENTRY, State.DENY);
+		region.setFlag(DefaultFlag.EXIT, State.DENY);
+		
 
 		this.joiningEnabled = false;
 		this.invulnerabilityEnabled = false;
@@ -572,6 +579,10 @@ public class Game implements CountdownCallback, RestoreRegionCallback, RestoreSc
 			// so that it can be loaded again, when the player leaves the game
 			p.setOriginalState(createPlayerState(p.getPlayer()));
 
+
+			// add players as member to region...
+			// player can't leave region anymore
+			region.getMembers().addPlayer(p.getName());
 			
 			// teleport the player to his spawn location
 			safeTeleport(p, spawn);
@@ -652,6 +663,10 @@ public class Game implements CountdownCallback, RestoreRegionCallback, RestoreSc
 
 	private void onPlayerRemove(GamePlayer p, LeaveReason leaveReason) {
 
+		// remove player as member from region...
+		// player can't enter region anymore
+		region.getMembers().removePlayer(p.getName());
+		
 		PlayerState state = p.getOriginalState();
 		if(state != null) {
 			PlayerState.toPlayer(state, p.getPlayer());
